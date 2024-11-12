@@ -1,0 +1,35 @@
+summary: "Saves a Task"
+description: "Saves a task."
+consumes:
+- "application/json"
+parameters:
+        - in: body
+          name: task
+          description: JSON data to process
+          schema:
+            type: object
+            properties:
+              # Define the expected JSON structure here
+              id:
+                type: integer
+                format: int64
+              task:
+                type: string
+        - in: header
+          name: x-access-token
+          required: true
+          type: string
+          description: The API key needed to access this route.
+produces:
+- "application/json"
+responses:
+  200:
+    description: "Task saved successfully!"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Task 'Sample task' created with Id 1."
+  400:
+    description: "Invalid request data"

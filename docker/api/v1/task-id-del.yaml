@@ -1,0 +1,28 @@
+summary: "Delete a task"
+description: "Deletes a task Id."
+consumes:
+- "application/json"
+parameters:
+        - name: id
+          in: path
+          description: ID of the task to delete
+          required: true
+          type: string
+        - in: header
+          name: x-access-token
+          required: true
+          type: string
+          description: The API key needed to access this route.
+produces:
+- "application/json"
+responses:
+  200:
+    description: Task deleted successfully
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Task with ID '101' deleted"  
+  400:
+    description: "Invalid request data"
