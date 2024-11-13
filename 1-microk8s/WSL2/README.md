@@ -1,11 +1,12 @@
 # How to install microK8S in Windows - Follow the steps
 
 ## 1 -  WXP-10 -  WSL2 Ubuntu 22
-#To avoid proxy
+### To avoid proxy
+```
 wsl --update --web-download 
 wsl -l -v
 wsl --install -d Ubuntu-22.04
-
+```
 ## 2 - microK8s
 https://microk8s.io/docs/install-wsl2
 

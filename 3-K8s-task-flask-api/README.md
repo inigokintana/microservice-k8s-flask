@@ -26,7 +26,7 @@ To install and run the application on your Kubernetes cluster, follow these step
 2. Navigate to the project root directory.
 3. Create a Kubernetes deployment and service by running the following command:
 
-`kubectl apply -f kubernetes.yaml`
+`kubectl apply -f xxxx.yaml`
 
 4. Verify that the deployment and service have been created successfully by running the following command:
 
