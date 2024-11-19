@@ -33,15 +33,20 @@ Here are some examples
 │   ├── taskmaster-ikz-secret.yml
 │   ├── taskmaster-ikz.yml
 │   └── taskmaster-svc-ikz.yml
-├── 4-Gitlab-ArgoCD
+├── 4-K8s-Best-practices
+│   ├── ArgoCD
+│   ├── Istio
+│   ├── Mem-CPU-limits
+│   ├── Swiss-Army-Knife-networking
+│   │   ├── README.md
+│   │   └── swiss-army-knife.yaml
+│   └── eBPF
 ├── 5-WASM
-├── 6-K8S-swiftknife-tools
+├── 6-Prometheus-OpenTelemetry
 ├── 7-Kubeflow
 ├── 8-BigData-AI
-├── 9-Prometheus-OpenTelemetry
-├── 10-K8s-Best-practices
-│   ├── Istio
-│   └── eBPF
+├── 9-Gitlab-CI-CD
+│   └── README.md
 ├── LICENSE
 └── README.md
 ``` 
