@@ -13,7 +13,7 @@ Here are some examples
 │   └── WSL2
 │   │   └── README.md - How to install it in WSL2 - Ubuntu 22
 │   ├── Ubuntu: How t instal it in Ubuntu
-│   ├── AWS: TF/OpenTF scripts to run it in AWS
+│   ├── AWS: TF/OpenTofu scripts to run it in AWS
 │
 ├── 2-Docker: we need to build our own docker images with the demo aplications we build
 │   └── tasks-flask-api: a Flask API to handle tasks documented with Flasgger
@@ -50,3 +50,5 @@ Here are some examples
 ├── LICENSE
 └── README.md
 ``` 
+
+More to come

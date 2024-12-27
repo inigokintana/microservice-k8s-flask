@@ -20,4 +20,4 @@ spec:
           image: ikzdocker/task-api-flasgger:latest
           ports:
             - containerPort: 8080
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
