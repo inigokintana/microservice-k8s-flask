@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funny Character Game</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.0/full/pyodide.js"></script>
+</head>
+<body>
+    <h1>Funny Character Game</h1>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+    <script>
+        let pyodide;
+
+        async function loadPyodideAndRun() {
+            pyodide = await loadPyodide();
+            await pyodide.runPythonAsync(`
+                import pygame
+                import random
+                pygame.init()
+                
+                screen_width = 600
+                screen_height = 400
+                screen = pygame.display.set_mode((screen_width, screen_height))
+                pygame.display.set_caption("Funny Character Game")
+
+                WHITE = (255, 255, 255)
+                RED = (255, 0, 0)
+                GREEN = (0, 255, 0)
+
+                character = pygame.Rect(100, 100, 50, 50)
+                speed = 5
+
+                objects = [pygame.Rect(50, 50, 50, 50), pygame.Rect(500, 50, 50, 50), pygame.Rect(50, 350, 50, 50), pygame.Rect(500, 350, 50, 50)]
+                object_colors = [RED, GREEN, (0, 0, 255), (255, 255, 0)]
+                
+                def handle_collision():
+                    for i, obj in enumerate(objects):
+                        if character.colliderect(obj):
+                            object_name = f"Object {i + 1}"
+                            js_call_api(object_name)
+                            break
+                
+                def js_call_api(object_name):
+                    // Use fetch or XMLHttpRequest to make the REST API call
+                    fetch("http://172.22.104.3:30008/", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ "object_name": object_name })
+                    });
+            `);
+        }
+
+        loadPyodideAndRun();
+    </script>
+</body>
+</html>
