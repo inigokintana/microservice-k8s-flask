@@ -1,0 +1,15 @@
+summary: "Main"
+description: "main."
+produces:
+- "application/json"
+responses:
+  200:
+    description: "Task saved successfully!"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Welcome to Tasks app! I am running inside {xxxxyz} pod!"
+  400:
+    description: "Invalid request data"

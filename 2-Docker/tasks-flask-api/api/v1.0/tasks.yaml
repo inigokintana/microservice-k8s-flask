@@ -1,0 +1,21 @@
+summary: "Tasks list"
+description: "List all tasks inside the Mongo database."
+parameters:
+      - in: header
+        name: x-access-token
+        required: true
+        type: string
+        description: The API key needed to access this route.
+produces:
+- "application/json"
+responses:
+  200:
+    description: "Returns all the tasks in the Mongo database"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Returns all the tasks in the Mongo database"
+  400:
+    description: "Invalid request data"

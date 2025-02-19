@@ -1,0 +1,21 @@
+summary: "Tasks delete"
+description: "All tasks inside the Mongo database are deleted."
+parameters:
+      - in: header
+        name: x-access-token
+        required: true
+        type: string
+        description: The API key needed to access this route.
+produces:
+- "application/json"
+responses:
+  200:
+    description: "All Tasks deleted!"
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "All Tasks deleted!"
+  400:
+    description: "Invalid request data"
