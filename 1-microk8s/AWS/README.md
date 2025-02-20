@@ -15,13 +15,20 @@ Unlike Kind or minikube, **mikroK8s** is intended for production workloads as an
 - Is t4g.small FREE tier eligible? Yes, the t4g.small instance type is eligible for a free trial until December 31, 2025. This means you can use t4g.small instances without incurring charges up to 750 hours per month during this period
 
 # 3 - Opentofu - IaC
+aws client
+You must have an AWS account and AWS credential
+aws organization create lab env for  free tier
 
-you must have an AWS account and AWS credential
-aws tower lab env for  free tier
-
+Basic
 https://medium.com/@netopschic/provisioning-an-ec2-instance-using-opentofu-47aade14956a
+Detail
 https://4sysops.com/archives/opentofu-example-terraform-fork-create-an-ec2-instance-in-aws/
 
+
+Install OpenTofu
+Install AWS CLi
+Default VPC or not
+Others
 ### Example OpenTofu Configuration
 
 ```hcl

@@ -1,16 +1,16 @@
 # How to install microK8S in Windows - Follow the steps
 
 ## 1 -  WXP-10 -  WSL2 Ubuntu 22
-### To avoid proxy
+### To avoid company proxy
 ```
 wsl --update --web-download 
 wsl -l -v
 wsl --install -d Ubuntu-22.04
 ```
-## 2 - microK8s
-https://microk8s.io/docs/install-wsl2
+## 2 - microK8s install
+See [WSL2 install](https://microk8s.io/docs/install-wsl2)
 
-```
+````
 wsl 
 sudo microk8s status --wait-ready
 
@@ -46,20 +46,27 @@ addons:
     rook-ceph            # (core) Distributed Ceph storage using Rook
     storage              # (core) Alias to hostpath-storage add-on, deprecated
 
-iquintza@B1083852:/mnt/c/WINDOWS/system32$
 sudo microk8s kubectl version
 Client Version: v1.31.1
 Kustomize Version: v5.4.2
 Server Version: v1.31.1
  
+````
 
+Microk8s web dashboard:
+````
 kubectl describe secret -n kube-system microk8s-dashboard-token
 
 sudo microk8s dashboard-proxy
+````
+Use the token above to log into Dashboard https://127.0.0.1:1443
 
-# aliases
+You can add the following alias into .bashrc to ease command line interaction:
+````
+#aliases in Ubuntu 
 alias smk="sudo microk8s kubectl"
-```
+````
+
 
 ## 3 -  Troubleshooting
 
@@ -67,12 +74,4 @@ error: timed out waiting for the condition on deployments/kubernetes-dashboard
 
 https://microk8s.io/docs/troubleshooting
 
-Use free proxy wifi
-
-
-## 4 - Container K8S Flask API demo
-
-https://www.linkedin.com/pulse/distroless-images-python-flask-perfect-combination-fast-chatterjee-qgbjc/
-
-
-Distroless no so good - log - shell for errors -lack dev control - alpine
+Use proxy free connection/wifi
