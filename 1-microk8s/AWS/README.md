@@ -12,7 +12,7 @@ Unlike Kind or minikube, **mikroK8s** is intended for production workloads as an
 - Microk8S requirements 540Mb to 4GB memory and 20GB disk space - [link](https://microk8s.io/docs/getting-started)
 - Cheaper AWS instance with Ubuntu 22.04 to instal should be t3 (Intel/AMD) vs t4G(ARM) family - [link]()
 - Microk8s can run with AMD cheaper chips so we choose t4g.small - 2 vCPU and 2 GB RAM instance
-- Is t4g.small FREE tier eligible? Yes, the t4g.small instance type is eligible for a free trial until December 31, 2025. This means you can use t4g.small instances without incurring charges up to 750 hours per month during this period
+- Is t4g.small FREE tier eligible? Yes, the t4g.small instance type is eligible for a free trial until December 31, 2025. This means you can use t4g.small instances without incurring charges up to 750 hours per month during this period, see [link](https://aws.amazon.com/ec2/faqs/#t4g-instances)
 
 # 3 - Opentofu - IaC
 aws client
