@@ -10,25 +10,47 @@ Unlike Kind or minikube, **mikroK8s** is intended for production workloads as an
 
 # 2. System requirements
 - Microk8S requirements 540Mb to 4GB memory and 20GB disk space - [link](https://microk8s.io/docs/getting-started)
-- Cheaper AWS instance with Ubuntu 22.04 to instal should be t3 (Intel/AMD) vs t4G(ARM) family - [link]()
+- Cheaper & more poweful AWS instance with Ubuntu 22.04 to instal should be t4G(ARM) family 
 - Microk8s can run with AMD cheaper chips so we choose t4g.small - 2 vCPU and 2 GB RAM instance
 - Is t4g.small FREE tier eligible? Yes, the t4g.small instance type is eligible for a free trial until December 31, 2025. This means you can use t4g.small instances without incurring charges up to 750 hours per month during this period, see [link](https://aws.amazon.com/ec2/faqs/#t4g-instances)
 
 # 3 - Opentofu - IaC
-aws client
-You must have an AWS account and AWS credential
+You must have an AWS account and AWS credential. In our case we are using a playground account under AWS Organizations configured with SSO login, but this  configuration is far from the scope of this article/project.
+
+Install AWS client, see [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+
+Setup AWS client, see [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html)
+
 aws organization create lab env for  free tier
 
 Basic
 https://medium.com/@netopschic/provisioning-an-ec2-instance-using-opentofu-47aade14956a
 Detail
 https://4sysops.com/archives/opentofu-example-terraform-fork-create-an-ec2-instance-in-aws/
-
+microks
+https://alabekir1975.medium.com/installing-microk8s-on-aws-on-ubuntu20-04-server-e362091fb5ee
 
 Install OpenTofu
 Install AWS CLi
 Default VPC or not
 Others
+
+Find needed ami - # https://documentation.ubuntu.com/aws/en/latest/aws-how-to/instances/find-ubuntu-images/
+# https://cloud-images.ubuntu.com/locator/ec2/
+
+ aws ssm get-parameters --names /aws/service/canonical/ubuntu/server/22.04/stable/current/arm64/hvm/ebs-gp2/ami-id --profile 127214162
+577_AdministratorAccess --region eu-south-2
+
+
+"Name": "/aws/service/canonical/ubuntu/server/22.04/stable/current/arm64/hvm/ebs-gp2/ami-id",
+            "Type": "String",
+            "Value": "ami-0586af70ffaea9a74",
+            "Version": 40,
+            "LastModifiedDate": 1739941837.655,
+            "ARN": "arn:aws:ssm:eu-south-2::parameter/aws/service/canonical/ubuntu/server/22.04/stable/current/arm64/hvm/ebs-gp2/ami-id",
+            "DataType": "aws:ec2:image"
+
+aws ec2 describe-images --image-ids ami-0586af70ffaea9a74 --profile 127214162577_AdministratorAccess --region eu-south-2           
 ### Example OpenTofu Configuration
 
 ```hcl

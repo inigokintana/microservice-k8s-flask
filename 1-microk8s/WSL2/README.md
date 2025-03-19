@@ -1,77 +1,105 @@
-# How to install microK8S in Windows - Follow the steps
+# How to install microK8S in Windows WSL2 Ubuntu
+TOC
+- [How to install microK8S in Windows WSL2 Ubuntu](#how-to-install-microk8s-in-windows-wsl2-ubuntu)
+  - [1 - Install WSL2 & microK8s install](#1---install-wsl2--microk8s-install)
+    - [1.1 - In case you are behind company proxy](#11---in-case-you-are-behind-company-proxy)
+    - [1.2 - Checking everything is right](#12---checking-everything-is-right)
+    - [1.3 - Microk8s web dashboard proxy](#13---microk8s-web-dashboard-proxy)
+    - [1.4 - Microk8s web dashboard using service NodePort](#14---microk8s-web-dashboard-using-service-nodeport)
+    - [1.5 - Linux alias](#15---linux-alias)
+  - [2 - Troubleshooting](#2---troubleshooting)
+## 1 - Install WSL2 & microK8s install
+Follow steps in the link [WSL2 install](https://microk8s.io/docs/install-wsl2)
 
-## 1 -  WXP-10 -  WSL2 Ubuntu 22
-### To avoid company proxy
+### 1.1 - In case you are behind company proxy
 ```
 wsl --update --web-download 
 wsl -l -v
 wsl --install -d Ubuntu-22.04
 ```
-## 2 - microK8s install
-See [WSL2 install](https://microk8s.io/docs/install-wsl2)
 
+### 1.2 - Checking everything is right:
+
+## 1 - Install WSL2 & microK8s install
+Follow steps in the link [WSL2 install](https://microk8s.io/docs/install-wsl2)
+
+### 1.1 - In case you are behind company proxy
+```
+wsl --update --web-download 
+wsl -l -v
+wsl --install -d Ubuntu-22.04
+```
+
+### 1.2 - Checking everything is right:
 ````
 wsl 
 sudo microk8s status --wait-ready
-
-microk8s is running
-high-availability: no
-  datastore master nodes: 127.0.0.1:19001
-  datastore standby nodes: none
-addons:
-  enabled:
-    dns                  # (core) CoreDNS
-    ha-cluster           # (core) Configure high availability on the current node
-    helm                 # (core) Helm - the package manager for Kubernetes
-    helm3                # (core) Helm 3 - the package manager for Kubernetes
-  disabled:
-    cert-manager         # (core) Cloud native certificate management
-    cis-hardening        # (core) Apply CIS K8s hardening
-    community            # (core) The community addons repository
-    dashboard            # (core) The Kubernetes dashboard
-    gpu                  # (core) Alias to nvidia add-on
-    host-access          # (core) Allow Pods connecting to Host services smoothly
-    hostpath-storage     # (core) Storage class; allocates storage from host directory
-    ingress              # (core) Ingress controller for external access
-    kube-ovn             # (core) An advanced network fabric for Kubernetes
-    mayastor             # (core) OpenEBS MayaStor
-    metallb              # (core) Loadbalancer for your Kubernetes cluster
-    metrics-server       # (core) K8s Metrics Server for API access to service metrics
-    minio                # (core) MinIO object storage
-    nvidia               # (core) NVIDIA hardware (GPU and network) support
-    observability        # (core) A lightweight observability stack for logs, traces and metrics
-    prometheus           # (core) Prometheus operator for monitoring and logging
-    rbac                 # (core) Role-Based Access Control for authorisation
-    registry             # (core) Private image registry exposed on localhost:32000
-    rook-ceph            # (core) Distributed Ceph storage using Rook
-    storage              # (core) Alias to hostpath-storage add-on, deprecated
+  microk8s is running
 
 sudo microk8s kubectl version
-Client Version: v1.31.1
-Kustomize Version: v5.4.2
-Server Version: v1.31.1
+  Client Version: v1.32.2
+  Kustomize Version: v5.5.0
+  Server Version: v1.32.2
  
 ````
 
-Microk8s web dashboard:
+### 1.3 - Microk8s web dashboard proxy:
 ````
 kubectl describe secret -n kube-system microk8s-dashboard-token
 
-sudo microk8s dashboard-proxy
+sudo microk8s dashboard-proxy &
 ````
-Use the token above to log into Dashboard https://127.0.0.1:1443
+- This last command starts a proxy to the Kubernetes Dashboard UI and it will be available at https://127.0.0.1:10443
+- Launch it as a background process with <span style="color: red;">&</span> in order to regain console foreground control
+- Use the token got above to log into Dashboard
+### 1.4 - Microk8s web dashboard using service NodePort:
+Alternatively, if you do not want to use the proxy service above, you can convert dashboard service from clusterip service into nodeport service. For example:
+````yaml
+sudo microk8s kubectl edit  svc/kubernetes-dashboard -n kube-system
+  type: NodePort
+  nodePort: 30080
 
-You can add the following alias into .bashrc to ease command line interaction:
+sudo microk8s kubectl describe svc/kubernetes-dashboard -n kube-system
+  Name:                     kubernetes-dashboard
+  Namespace:                kube-system
+  Labels:                   k8s-app=kubernetes-dashboard
+  Annotations:              <none>
+  Selector:                 k8s-app=kubernetes-dashboard
+  # check NodePort type
+  Type:                     NodePort
+  IP Family Policy:         SingleStack
+  IP Families:              IPv4
+  IP:                       10.152.183.21
+  IPs:                      10.152.183.21
+  Port:                     <unset>  443/TCP
+  TargetPort:               8443/TCP
+  # check NodePort port
+  NodePort:                 <unset>  30080/TCP
+  Endpoints:                10.1.101.69:8443
+  Session Affinity:         None
+  External Traffic Policy:  Cluster
+  Internal Traffic Policy:  Cluster
+  Events:                   <none>
+
+# to get the server IP
+sudo microk8s kubectl get nodes -o wide
+  NAME              STATUS   ROLES    AGE   VERSION   INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION                       CONTAINER-RUNTIME
+  desktop-41ahscb   Ready    <none>   14h   v1.32.2   172.23.103.249   <none>        Ubuntu 22.04.5 LTS   5.15.167.4-microsoft-standard-WSL2   containerd://1.6.36
+````
+Dashboard should be available in your **https://VM-ip:30080 port**, in our example https://172.23.103.249:30080
+
+### 1.5 - Linux alias:
+Optionally, you can add the following alias into .bashrc to ease command line interaction:
 ````
 #aliases in Ubuntu 
 alias smk="sudo microk8s kubectl"
 ````
 
 
-## 3 -  Troubleshooting
+## 2 -  Troubleshooting
 
 error: timed out waiting for the condition on deployments/kubernetes-dashboard
 
 https://microk8s.io/docs/troubleshooting
 
-Use proxy free connection/wifi
+Solution: use proxy free connection/wifi during microk8s install
