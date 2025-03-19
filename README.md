@@ -4,9 +4,9 @@
 - **WIP - WIP - WIP - WIP - WIP - WIP - WIP - WIP - WIP - WIP**
 - **NOT READY for use yet**
 
-AI agents (hands) getting data from local data sources and passing RAG results to local LLM (brain) with Ollama to get a human readable result.
+Build a POC of AI agents (hands) getting data from local data sources and passing RAG results to local LLM (brain) with Ollama to get a human readable result.
 
-Data is kept private and never goes outsite the company defined infraestructure.
+Data is kept private and never goes outsite the company defined infrastructure.
 
 All done with CNCF neutral vendor OSS technology.
 
@@ -21,9 +21,9 @@ All done with CNCF neutral vendor OSS technology.
     - Open Telemetry, see [incubating status](https://www.cncf.io/projects/opentelemetry/)
     - ArgoCD, see [graduated status](https://www.cncf.io/projects/argo/)
     - ...
-- More on [CNCF projects status](https://www.cncf.io/project-metrics/)
+- More on [CNCF projects status](https://www.cncf.io/project-metrics/) or [CNCF ecosystem landscape](https://landscape.cncf.io/)
 
-**Why is this project done? In orther to become a good hands on CTO/Architect/DevSecOps/SRE/Platform/AI engineer, you need to:**
+**Motivation. Why is this project done? In orther to become a good hands on CTO/Architect/DevSecOps/SRE/Platform/AI engineer, you need to:**
 - Play hard & work smart: undestanding by playing with some specially **selected & curated & documented** mini **POC (probe of concept)** projects.
 - Explain what you have done to someone else for better understanding
 - Try to return some value to OSS community. We receive a lot and contribute very little.
@@ -60,13 +60,54 @@ This is a summary from [CNCF's Dapr AI Agents Blog](https://www.cncf.io/blog/202
 - **Event-driven and non-deterministic execution**: next agent to respond can be dynamically determined by an LLM, enabling autonomous and evolving workflows.
 
 ## 1.4 - Why Ollama?
+Ollama is a powerful tool for anyone looking to work with different LLMs in a local and vendor-neutral way. It allows you to:
+
+- Run multiple models locally (privacy & security) without the need for cloud infrastructure.
+- Have full control over your models and hardware. This allows you to choose the right model for your task, whether it’s for creative writing, summarization, answering questions, or any other use case. You can use any of the [following models](https://github.com/ollama/ollama/blob/main/README.md#model-library) on the list depending on your hardware mem/cpu constraints. **"You should have at least 8 GB of RAM available to run the 7B models, 16 GB to run the 13B models, and 32 GB to run the 33B models."**
+- Avoid cloud dependencies and costs. Still you can run it in any cloud, of course.
+- Ensure privacy by processing data locally.
+- It’s ideal for developers, researchers, or anyone who wants to experiment with multiple LLMs without being locked into a specific cloud vendor or paying for expensive API calls.
 
 ## 1.5 - Why Open Telemetry?
 
+- Unified solution for **collecting metrics, logs, and traces,** which gives a comprehensive view of your system's health and performance.
+- **Vendor-neutral and open-source project governed by the Cloud Native Computing Foundation (CNCF)**, preventing lock-in and allowing you to send telemetry data to multiple backends.OpenTelemetry allows you to send telemetry data to multiple backends, such as Prometheus, Jaeger, Loki, Zipkin, Elasticsearch, or OpenSearch.
+- **Improved observability**, especially for modern distributed systems (like microservices) where tracing and metrics are crucial. With metrics, you can monitor key performance indicators (KPIs) and set up alerts for anomalies. With logs, you can inspect and troubleshoot specific events, and with traces, you can identify the root cause of latency or failures in complex, distributed systems.
+- **Simplified instrumentation**, with automatic and manual methods for collecting data, depending on your needs.
+    - **out-of-the-box instrumentation or auto-instrumentation** 
+        - for many popular programming languages (including Python, Java, Go, JavaScript, and more) and libraries (such as HTTP servers, databases, message queues, and more). You simply add **OpenTelemetry SDKs to your code**, and it will automatically collect and export telemetry data for you.
+        - **Agents** for legacy applications or code you can not touch.
+    - **Optional custom instrumentation**: for custom application components, OpenTelemetry also provides APIs/SDK to manually instrument parts of your code.
+- **Scalability and flexibility** to fit a wide variety of system architectures thank to the flexibility of the OpenTelemetry collector.
+- **Extensibility to integrate with many third-party systems and tailor the solution** to your specific needs with Kubernetes, Docker, Helm, Prometheus, Loki, Jaeger, existing observability platforms, such as Datadog, Elastic Stack, and New Relic, have built-in support for OpenTelemetry.
+- **Cost-effective**monitoring with control over where data is sent and stored.
+- **Strong community support and integration with the broader cloud native ecosystem**.
+- OpenTelemetry is rapidly becoming the **industry standard for observability**.
+
 ## 1.6 - Why Flask?
+Flask is a popular lightweight web framework for Python, and it can be a great choice for building microservices. Flask offers several advantages:
 
-## 1.7 - Why ArgoCD?
+- Simplicity: If you want to build lightweight, independent RESTful API services with minimal setup and configuration, Flask is a great choice.
+- Flexibility: If you need a flexible framework that can integrate with many different backends and services, Flask can give you that flexibility without locking you into a rigid structure.
+    - Asynchronous Support: While Flask is synchronous by default, it can be extended to handle asynchronous requests, which can be important for microservices that require non-blocking IO.
+    -Flask supports both synchronous and asynchronous communication, which is essential in a microservices environment where services need to talk to each other efficiently. You can implement REST API calls or even integrate with messaging systems like RabbitMQ, Kafka, or Redis for event-driven architectures.
+        - WebSockets for real-time communication: Flask can be easily integrated with libraries like Flask-SocketIO to allow WebSocket connections for real-time, bidirectional communication between services or clients.
+        - RPC (Remote Procedure Call): Flask allows you to set up RPC-style communication using protocols such as gRPC or JSON-RPC if you need low-latency communication.
+- Quick Prototyping: If you need to quickly spin up new services or APIs in a microservices architecture, Flask’s simplicity allows for rapid development.
+- Small to Medium-Scale Microservices: Flask is ideal for smaller-scale microservices where performance and complexity are not the primary bottlenecks. For larger-scale systems, you might need a more robust solution (e.g., FastAPI, Spring Boot, or Go).**Be aware of:**
+    - **Flask is Single-Threaded** by Default when running the development server (which uses Werkzeug). This means it can only handle one request at a time per worker process, which makes it unsuitable for production use due to limitations in handling concurrent requests.
+    - Here comes Gunicorn to the rescue as **Gunicorn can spawn more workers to distribute the load**. This way, you can handle multiple requests at once and ensure that your app remains responsive even under heavy load.
+    - When you run a Flask application with Gunicorn, **each Gunicorn worker acts as an independent Flask process**, and each of those workers is generally a single-threaded Flask application.
 
+- Monitoring and Tracing: Flask integrates well with OpenTelemetry, Prometheus, and other monitoring tools for tracking the health and performance of your microservices.
+
+## 1.7 - Why OpenTofu?
+
+## 1.8 - Why shell script & helm over ansible?
+
+## 1.8 - Why ArgoCD?
+
+## 1.9 - Why not a CI/CD like Gitlab?
 
 # 2 - Here some of the selected POCs
 
@@ -76,33 +117,12 @@ This is a summary from [CNCF's Dapr AI Agents Blog](https://www.cncf.io/blog/202
 │   └── WSL2: how to install it locally in WSL2 - Ubuntu 22
 ├── 2-Docker
 │   └── tasks-flask-api
-│       └── api
-│           ├── v1
-│           ├── v1.0
-│           └── v2
 ├── 3-K8s-task-flask-api: with our own Task application we CRUD tasks in MongoDB in K8S platform
 ├── 4-K8s-Best-practices
-│   ├── 4.1-Swiss-Army-Knife-networking
-│   ├── ArgoCD
-│   ├── Istio
-│   ├── Mem-CPU-limits
-│   └── eBPF
-├── 5-WASM
-│   └── build
-│       ├── web
-│       └── web-cache
-├── 6-Prometheus-OpenTelemetry
-├── 7-Kubeflow
-├── 8-BigData-AI
-│   └── crewAI
-│       └── 1stcrewaiproject
-│           ├── knowledge
-│           ├── src
-│           │   └── 1stcrewaiproject
-│           │       ├── config
-│           │       └── tools
-│           └── tests
-└── 9-Gitlab-CI-CD
+├── 5-BigData-AI
+│   └── Dapr
+│   └── Ollama
+├── 6-OpenTelemetry
 ``` 
 # 3 - Install
 Go to each numbered POC subfolder for installation instructions and project more detailed explanations

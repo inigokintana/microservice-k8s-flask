@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/bash 
+# set -e
+# set -x
 ### wait  network to come up
 URL="api.snapcraft.io"  # snap server api
 # The HTTP status code to check for (200 OK)
