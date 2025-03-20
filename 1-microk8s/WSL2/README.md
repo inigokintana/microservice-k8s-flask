@@ -33,6 +33,9 @@ wsl --install -d Ubuntu-22.04
 ### 1.2 - Checking everything is right:
 ````
 wsl 
+# update ubuntu
+sudo apt-get update -y
+sudo apt-get upgrade -y           
 sudo microk8s status --wait-ready
   microk8s is running
 
@@ -91,12 +94,105 @@ Dashboard should be available in your **https://VM-ip:30080 port**, in our examp
 ### 1.5 - Linux alias:
 Optionally, you can add the following alias into .bashrc to ease command line interaction:
 ````
-#aliases in Ubuntu 
+#aliases in Ubuntu WSL2
 alias smk="sudo microk8s kubectl"
 ````
 
+## 1.6 - Install Dapr with agents in Intel architecture
+#### 1. **Install Dapr CLI**:
+   To install the Dapr CLI, which will help manage Dapr deployments, follow the steps below:
+   
+   **For Linux/macOS**:
+   ```bash
+    wget https://github.com/dapr/cli/releases/download/v1.15.0/dapr_linux_amd64.tar.gz
+    tar -xvzf dapr_linux_amd64.tar.gz
+    sudo mv dapr /usr/local/bin/dapr
+   ```
+#### 2. **Initialize Dapr on MicroK8s**:
+   Now that you have the Dapr CLI installed, you can initialize Dapr on your MicroK8s cluster.
 
-## 2 -  Troubleshooting
+   Run the following command to install Dapr in your MicroK8s Kubernetes cluster:
+   ```bash
+   dapr init --kubernetes
+   ```
+
+#### 3. **Verify Dapr Installation**:
+   After installation, you can verify that Dapr is running correctly using the following commands:
+   
+   Check the status of the Dapr pods:
+   ```bash
+   kubectl get pods -n dapr-system
+   ```
+
+   Ensure that the Dapr control plane is up and running. The pods should look similar to:
+   - `dapr-operator`
+   - `dapr-placement`
+   - `dapr-sidecar-injector`
+   
+   If everything is running smoothly, you’ll see the corresponding pods in the `Running` state.
+
+#### 4. **Install AI Agent Components (Optional)**:
+   If you are looking to use Dapr with **AI agents**, you might need to install specific AI components or integrate libraries such as **TensorFlow**, **PyTorch**, or **OpenAI GPT models**. However, Dapr itself doesn’t directly handle AI agents; rather, you can leverage Dapr's capabilities (like state management, pub/sub, and bindings) to interact with AI models running within your Kubernetes cluster.
+
+   You would typically:
+   - Deploy AI models as containers in your Kubernetes cluster.
+   - Use Dapr’s pub/sub or state management to communicate with these AI services.
+   
+   For example, you could use **Dapr bindings** to connect to AI models or invoke services that leverage AI models via HTTP/gRPC.
+
+#### 5. **Deploy an Example Dapr Application**:
+   To test your Dapr setup, deploy a sample application that integrates with Dapr's capabilities, such as state management or pub/sub. Here's a simple example using a basic pub/sub model.
+
+   First, create a `pubsub.yaml` file:
+   ```yaml
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: pubsub-app
+   spec:
+     replicas: 1
+     selector:
+       matchLabels:
+         app: pubsub-app
+     template:
+       metadata:
+         labels:
+           app: pubsub-app
+       spec:
+         containers:
+         - name: pubsub-app
+           image: daprio/examples:pubsub
+           env:
+             - name: DAPR_HTTP_PORT
+               value: "3500"
+           ports:
+             - containerPort: 3500
+   ```
+
+   Apply the deployment:
+   ```bash
+   kubectl apply -f pubsub.yaml
+   ```
+
+   Then, to check the logs and see if the app is running properly:
+   ```bash
+   kubectl logs -f <pod-name> -n default
+   ```
+
+#### 6. **Access Dapr Dashboard**:
+   Dapr provides a dashboard to monitor and interact with the services running in the cluster. To access the dashboard, run:
+   ```bash
+   dapr dashboard
+   ```
+
+   This will open the Dapr dashboard in your web browser, where you can view the state of your applications and interact with them.
+
+---
+## 1.7 - Install Ollama choosing a small model in Intel architecture
+
+## 1.8 - Install Argo CD
+
+## 2 -  Microk8s troubleshooting
 
 error: timed out waiting for the condition on deployments/kubernetes-dashboard
 

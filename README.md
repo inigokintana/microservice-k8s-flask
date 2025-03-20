@@ -58,6 +58,8 @@ This is a summary from [CNCF's Dapr AI Agents Blog](https://www.cncf.io/blog/202
 
 - **Event-driven and non-deterministic execution**: next agent to respond can be dynamically determined by an LLM, enabling autonomous and evolving workflows.
 
+- Additionally, **[Dapr can be used from any developer framework but python/Flask is carefully integrated](https://docs.dapr.io/concepts/overview/#developer-frameworks)**
+
 ## 1.4 - Why Ollama?
 **Ollama is a powerful tool for anyone looking to work with different LLMs in a local and vendor-neutral way**. It allows you to:
 
