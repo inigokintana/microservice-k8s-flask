@@ -58,7 +58,7 @@ This is a summary from [CNCF's Dapr AI Agents Blog](https://www.cncf.io/blog/202
 
 - **Event-driven and non-deterministic execution**: next agent to respond can be dynamically determined by an LLM, enabling autonomous and evolving workflows.
 
-- Additionally, **[Dapr can be used from any developer framework but python/Flask is carefully integrated](https://docs.dapr.io/concepts/overview/#developer-frameworks)**
+- Additionally, **[Dapr can be used from any developer framework and python/Flask is carefully integrated](https://docs.dapr.io/concepts/overview/#developer-frameworks)**
 
 ## 1.4 - Why Ollama?
 **Ollama is a powerful tool for anyone looking to work with different LLMs in a local and vendor-neutral way**. It allows you to:
@@ -68,6 +68,9 @@ This is a summary from [CNCF's Dapr AI Agents Blog](https://www.cncf.io/blog/202
 - Avoid cloud dependencies and costs. Still you can run it in any cloud, of course.
 - Ensure privacy by processing data locally.
 - It’s ideal for developers, researchers, or anyone who wants to experiment with multiple LLMs without being locked into a specific cloud vendor or paying for expensive API calls.
+
+**Be aware of Dapr support for Mistral and Mistral running on CPU** see [link](https://heidloff.net/article/running-mistral-locally-cpu/https://heidloff.net/article/running-mistral-locally-cpu/)
+- https://www.oneclickitsolution.com/centerofexcellence/aiml/run-mistral-7b-locally-hardware-software-specs
 
 ## 1.5 - Why Open Telemetry?
 

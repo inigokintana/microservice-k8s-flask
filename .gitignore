@@ -2,5 +2,6 @@
 .venv
 2-Docker/tasks-flask-api/.venv
 5-WASM/.venv
-8-BigData-AI/crewAI/.venv
-8-BigData-AI/crewAI/1stcrewaiproject/.env
+8-BigData-AI/Dapr/*
+8-BigData-AI/files
+8-BigData-AI/pgDemo

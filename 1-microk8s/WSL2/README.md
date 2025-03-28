@@ -113,8 +113,20 @@ alias smk="sudo microk8s kubectl"
 
    Run the following command to install Dapr in your MicroK8s Kubernetes cluster:
    ```bash
-   dapr init --kubernetes
+   dapr init --kubernetes --dev
    ```
+   ⌛  Making the jump to hyperspace...
+ℹ️  Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
+
+ℹ️  Container images will be pulled from Docker Hub
+✅  Deploying the Dapr control plane with latest version to your cluster...
+✅  Deploying the Dapr dashboard with latest version to your cluster...
+✅  Deploying the Dapr Redis with 17.14.5 version to your cluster...
+✅  Deploying the Dapr Zipkin with latest version to your cluster...
+ℹ️  Applying "statestore" component to Kubernetes "default" namespace.
+ℹ️  Applying "pubsub" component to Kubernetes "default" namespace.
+ℹ️  Applying "appconfig" zipkin configuration to Kubernetes "default" namespace.
+✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://docs.dapr.io/getting-started
 
 #### 3. **Verify Dapr Installation**:
    After installation, you can verify that Dapr is running correctly using the following commands:
@@ -122,6 +134,7 @@ alias smk="sudo microk8s kubectl"
    Check the status of the Dapr pods:
    ```bash
    kubectl get pods -n dapr-system
+   kubectl get pods -n default  
    ```
 
    Ensure that the Dapr control plane is up and running. The pods should look similar to:
@@ -131,7 +144,15 @@ alias smk="sudo microk8s kubectl"
    
    If everything is running smoothly, you’ll see the corresponding pods in the `Running` state.
 
-#### 4. **Install AI Agent Components (Optional)**:
+#### 4. **Install AI Agent Components (Optional)**
+
+See https://www.cncf.io/blog/2025/03/12/announcing-dapr-ai-agents/
+See https://github.com/dapr/dapr-agents/blob/main/quickstarts/README.md
+https://github.com/dapr/dapr-agents/tree/main/quickstarts/01-hello-world
+see https://platform.openai.com/settings/organization/api-keys 5$ spents
+
+Errors with dapr instalation
+
    If you are looking to use Dapr with **AI agents**, you might need to install specific AI components or integrate libraries such as **TensorFlow**, **PyTorch**, or **OpenAI GPT models**. However, Dapr itself doesn’t directly handle AI agents; rather, you can leverage Dapr's capabilities (like state management, pub/sub, and bindings) to interact with AI models running within your Kubernetes cluster.
 
    You would typically:
@@ -182,12 +203,39 @@ alias smk="sudo microk8s kubectl"
 #### 6. **Access Dapr Dashboard**:
    Dapr provides a dashboard to monitor and interact with the services running in the cluster. To access the dashboard, run:
    ```bash
-   dapr dashboard
+   dapr dashboard -k -p 9999
    ```
 
    This will open the Dapr dashboard in your web browser, where you can view the state of your applications and interact with them.
 
----
+   See http://localhost:9999/controlplane
+
+## 6.1 - Zipkin trace analysis
+  - k get services
+  - kubectl port-forward svc/dapr-dev-zipkin 9411:9411 &
+  - http://localhost:9411/zipkin/
+
+## 6.2 - Redis access
+  - k get secrects
+  - k get secret dapr-dev-redis -o yaml
+ 
+  Previous command retuns the redis-password encripted in base64 so we need to decrypt:
+  - echo "xxx" | base64 -d 
+  - k get pods
+  - k exec -it pod/dapr-dev-redis-master-0 -- sh
+  - $ redis-cli -a  "password"
+  - 127.0.0.1:6379> keys *
+    1) "nodeapp||order"
+  - hgetall "nodeapp||order"
+      1) "data"
+      2) "{\"orderId\":16301}"
+      3) "version"
+      4) "16302"
+
+## 6.3 - OpenTelemetry
+
+See https://docs.dapr.io/operations/observability/tracing/otel-collector/open-telemetry-collector/
+
 ## 1.7 - Install Ollama choosing a small model in Intel architecture
 
 ## 1.8 - Install Argo CD

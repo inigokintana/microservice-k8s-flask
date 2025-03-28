@@ -57,7 +57,7 @@ resource "aws_security_group" "allow_ssh_k8s" {
     cidr_blocks = ["0.0.0.0/0"] #anywhere
   }
   
-  # microk8s dashboard port
+  # microk8s dashboard-proxy  port
   ingress {
     from_port   = 10443
     to_port     = 10443
