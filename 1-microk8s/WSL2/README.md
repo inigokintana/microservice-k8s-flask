@@ -237,6 +237,61 @@ Errors with dapr instalation
 See https://docs.dapr.io/operations/observability/tracing/otel-collector/open-telemetry-collector/
 
 ## 1.7 - Install Ollama choosing a small model in Intel architecture
+cd 8-BigData-AI/Ollama
+k apply namespace.yaml
+k apply deployment.yaml
+k apply service.yaml
+kubectl -n ollama port-forward service/ollama 11434:80 &
+k get pod -n ollama
+k -n ollama exec -it pod/ollama-59476b6f4c-rmjkz -- sh
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2:1b",
+  "prompt": "What is Kubernetes?",
+  "stream": false,
+  "raw": true
+  }'
+
+
+### 1.7.1 postgres pgvector
+cd 8-BigData-AI/Ollama/pgVector
+k apply -f namespace.yaml
+k -n pgvector create secret generic pgvectorconfig --from-literal POSTGRES_USER=postgres --from-literal POSTGRES_PASSWORD=pgvector --from-literal POSTGRES_DB=pgvector --dry-run=client -o yaml > secret-pgvector.yaml
+k apply -f secret-pgvector.yaml
+k apply -f deployment.yaml
+k aply -f service.yaml
+
+k -n pgvector exec -it pod/pgvector-5bd69f6c84-b85pg -- sh
+
+psql -U postgres -d pgvector -W
+
+pgvector=# select * from pg_extension;
+  oid  | extname | extowner | extnamespace | extrelocatable | extversion | extconfig | extcondition 
+-------+---------+----------+--------------+----------------+------------+-----------+--------------
+ 13569 | plpgsql |       10 |           11 | f              | 1.0        |           | 
+(1 row)
+
+pgvector=# create extension vector;
+CREATE EXTENSION
+pgvector=# select * from pg_extension;
+  oid  | extname | extowner | extnamespace | extrelocatable | extversion | extconfig | extcondition 
+-------+---------+----------+--------------+----------------+------------+-----------+--------------
+ 13569 | plpgsql |       10 |           11 | f              | 1.0        |           | 
+ 16389 | vector  |       10 |         2200 | t              | 0.8.0      |           | 
+(2 rows)
+
+k -n pgvector port-forward service/pgvector 15432:5432 &
+psql -U postgres -d pgvector -h localhost -p 15432 -W  < works>
+
+cd microservice-k8s-flask/8-BigData-AI/pgDemo$ ls
+
+for i in `ls *.dat`
+do
+k cp $i pgvector/pgvector-5bd69f6c84-b85pg:/tmp/
+done
+k cp restore.sql pgvector/pgvector-5bd69f6c84-b85pg:/tmp/
+
+Connect to pod - change file permissions 666 and execute psql -U postgres -d pgvector -h localhost -p 15432 -W <  restore.sql
+
 
 ## 1.8 - Install Argo CD
 

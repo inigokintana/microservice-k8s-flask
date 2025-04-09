@@ -42,7 +42,7 @@ In short, Kubernetes is designed to be flexible, extensible, and cloud-agnostic,
 
 You can **start small and install microk8s under your PC WSL2/Ubuntu or AWS free tier machine and later on move those projects into [microk8s HA environment](https://www.cncf.io/online-programs/microk8s-ha-under-the-hood-kubernetes-with-dqlite/), EKS, AKS, GKS or OpenShift**. 
 
-This **use case is specially valuable** when corporate close minded IT/SOC/SecOps/platform teams does not provide confortable lab/dev environments and developers are left in **"very restricted"** or **"do everything by your own" schenarios**. **DevOps culture is not the same in every place**.
+This **option is specially valuable** when corporate close minded IT/SOC/SecOps/platform teams does not provide confortable lab/dev environments and developers are left in **"very restricted"** or **"do everything by your own" schenarios**. **DevOps culture is not the same in every organization**.
 
 
 ## 1.3 - Why DAPR AI Agents?
@@ -139,7 +139,7 @@ I love Gitlab OSS vs SaaS product and commercial strategy and although I have co
 ## 1.9 - Why ArgoCD?
 ArgoCD is installed inside microk8s and can be linked into a git repo so whatever changes we make to the code is deployed inside K8S.
 
-Ideally, we are going to incrementally add more and more features and best practices to our POC microservices, so, it would be nice be nice have a CD (continuous deployment) in our microk8s after we push whatever code or config change into our microservices POC git repo.
+Ideally, we are going to incrementally add more and more features and best practices to our POC microservices, so, it would be nice be to have a CD (continuous deployment) just after we push whatever code or config change into our microservices git repo.
 
 # 2 - Here some of the selected POCs
 **WIP**

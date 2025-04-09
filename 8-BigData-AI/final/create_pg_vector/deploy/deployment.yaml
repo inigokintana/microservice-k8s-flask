@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgvector
+  namespace: pgvector
+  labels:
+    app: pgvector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgvector
+  template:
+    metadata:
+      labels:
+        app: pgvector
+    spec:
+      containers:
+      - name: pgvector
+        # Use the pgvector image for PostgreSQL 17 https://hub.docker.com/r/pgvector/pgvector/tags
+        image: pgvector/pgvector:pg17
+        ports:
+        - name: pgvectorport
+          containerPort: 5432
+          protocol: TCP
+        envFrom:
+        - secretRef:
+            name: pgvectorconfig
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data
+          name: pgvector-data
+        volumeMounts:
+        - name: pgvector-data-volume
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: pgvector-data-volume
+        hostPath:
+          path: /var/lib/postgresql/data
+          type: Directory

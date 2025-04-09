@@ -86,9 +86,26 @@ dapr dashboard -k -p 9999 &
 # Deploy task flask api with the comand above
 
 ## Install Ollama arm architecture
+cd 8-BigData-AI/Ollama
+k apply namespace.yaml
+k apply deployment.yaml <- find ARM image
+k apply service.yaml
+kubectl -n ollama port-forward service/ollama 11434:80 &
+k get pod -n ollama
+k -n ollama exec -it pod/ollama-59476b6f4c-rmjkz -- sh
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2:1b",
+  "prompt": "What is Kubernetes?",
+  "stream": false,
+  "raw": true
+  }'
+
+# Instal pg with pgvector - activate extension
 
 
 # Install ArgoCD arm architecture
+
+
 # kubectl create namespace argocd
 # kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 #expose via port server
