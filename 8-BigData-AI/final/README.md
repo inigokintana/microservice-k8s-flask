@@ -12,11 +12,10 @@
 - We can create some PDF & DOCx files with different demo data to simulate local sources to play with the selected LLM
 
 So, we are going to create some python demo projects:
-- **guess_poems** - simple python to interact directly  with local LLM sending a promt
-- **guess_films** - we create an agent that reads local postgresql dvdrental database film description data into a prompt and asks local LLM to guess the film tittle
-- **guess_cosmopedia_questions** -  we create an agent that retrieves the most relevant results from the cosmopedia knowledge base loaded in local postgresql using RAG and local LLM.
-![RAG-LLM](../../RAG-LLM.png) Image from www.mongodb.com blog  see [link](https://www.mongodb.com/developer/products/atlas/choose-embedding-model-rag/)
-- More to come ...
+- **guess-poems** - simple python to interact directly  with local LLM sending a prompt
+- **guess-films** - we create an agent that reads local postgresql dvdrental database film description data into a prompt and asks local LLM to guess the film tittle. The LLM has no reference data and will not search the internet for you (common misconception). We will see how many times the LLM is right.
+- **guess-cosmopedia-questions** -  we create an agent that retrieves the most relevant results from the cosmopedia knowledge base loaded in local postgresql using RAG and local LLM. Image below is from www.mongodb.com blog  see [link](https://www.mongodb.com/developer/products/atlas/choose-embedding-model-rag/).![RAG-LLM](../../RAG-LLM.png). This time the LLM will hace actual data to provide the right answer. So, LLMs are great with good quality data provided by agents, otherwise it will not work as expected.
+- More demos to come ...
 
 # 2 - Why Llama3.2:1b LLM & UAE-Large-V1 embedding?
 
@@ -27,6 +26,13 @@ To sum up, Llama3.2:1b LLM & UAE-Large-V1 embedding can work effectively togethe
     - Context Window: Llama 3.2 1B supports a context window of 128,000 tokens, allowing it to process and understand a substantial amount of retrieved information
 
 - UAE-Large-V1 embedding: UAE-Large-V1: A small-ish (335M parameters) open-source embedding model
+
+**License:**
+- Llama3.2:1b LLM:  by Meta is released under the Llama 3.2 Community License Agreement. This license permits use, reproduction, distribution, and modification of the Llama materials, provided that users adhere to the terms specified in the agreement. Notably, the license includes an Acceptable Use Policy that outlines restrictions to ensure responsible use of the model, see [link](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/LICENSE). Notice, if your products or services using Llama 3.2 have more than 700 million monthly active users (on the Llama 3.2 version release date), you need to request a commercial license from Meta.
+- UAE-Large-V1 embedding: this embedding model, developed by WhereIsAI, is released under the **MIT License**. This permissive license allows for extensive use, including modification and distribution, provided that the original license and copyright notice are included in any copies or substantial portions of the software, see link [Hugging Face page](https://huggingface.co/WhereIsAI/UAE-Large-V1).
+
+
+
 
 ## 2.1 - Can llama3.2:1b LLM work with UAE-Large-V1 embeddings?
 - Yes, Llama 3.2:1B can work with UAE-Large-V1 embeddings. UAE-Large-V1 is a multilingual embedding model optimized for text retrieval across 26 languages, including English, Arabic, and others.  By integrating UAE-Large-V1 to generate embeddings for your text corpus and queries, you can enhance Llama 3.2:1B's retrieval-augmented generation (RAG) capabilities. This setup enables efficient retrieval of relevant information, allowing Llama 3.2:1B to generate more informed and contextually accurate responses.

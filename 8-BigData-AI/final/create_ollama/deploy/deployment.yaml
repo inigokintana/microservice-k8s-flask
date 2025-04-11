@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ollama-llm
-  namespace: agents
+  namespace: ollama
 spec:
   selector:
     matchLabels:
@@ -18,6 +18,8 @@ spec:
         dapr.io/app-port: "11434"
         dapr.io/sidecar-inject: "true"
         dapr.io/sidecar-inject-annotation: "true"
+        dapr.io/sidecar-liveness-probe-delay-second: "10"
+        dapr.io/sidecar-liveness-probe-timeout-seconds: "70"
     spec:
       containers:
       - name: ollama-llm

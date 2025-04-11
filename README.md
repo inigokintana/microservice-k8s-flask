@@ -46,7 +46,10 @@ This **option is specially valuable** when corporate close minded IT/SOC/SecOps/
 
 
 ## 1.3 - Why DAPR AI Agents?
-This is a summary from [CNCF's Dapr AI Agents Blog](https://www.cncf.io/blog/2025/03/12/announcing-dapr-ai-agents/)
+DAPR, [besides being in graduated status by CNCF](https://www.cncf.io/projects/dapr/),  provides building blocks for microservice applications, see image from this [link](https://dev.to/aws-builders/speed-up-microservices-development-with-dapr-on-aws-ek-85l):
+![Dapr Building Blocks](Dapr-Building-Blocks.png)
+
+Additionally, recently provides AI agents and Conversation API with LLMs.  This a summary from [CNCF's Dapr AI Agents Blog](https://www.cncf.io/blog/2025/03/12/announcing-dapr-ai-agents/)
 
 - **Robust and well-integrated workflow capabilities right from the very beginning**: Dapr Agents is built on top of Dapr’s full featured workflow engine. Dapr is reliable for production use cases. Dapr Agents uses Dapr’s proven workflow system, which is designed to handle failures, retries, and scaling. This gives 
 
