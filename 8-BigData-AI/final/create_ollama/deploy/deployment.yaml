@@ -31,4 +31,4 @@ spec:
         lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "ollama run llama3.2:1b"]
+                command: ["/bin/sh", "-c", " ollama pull all-minilm ; sleep 5 ; ollama run llama3.2:1b ; sleep 5"]

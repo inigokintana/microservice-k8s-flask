@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ollama-llm
-  namespace: agents
+  namespace: ollama
 spec:
   selector:
     matchLabels:
@@ -31,4 +31,5 @@ spec:
         lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "ollama run llama3.2:1b"]
+                command: ["/bin/sh"]
+                args: ["-c", "ollama run llama3.2:1b ; sleep 5 ; ollama run WhereIsAI/UAE-Large-V1 ; sleep 5"]
