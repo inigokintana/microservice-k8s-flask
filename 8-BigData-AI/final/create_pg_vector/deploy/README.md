@@ -11,4 +11,6 @@ vectorizer-worker container
 Follow steps https://github.com/timescale/pgai
 
 https://www.timescale.com/blog/vector-databases-are-the-wrong-abstraction 
+
+https://www.youtube.com/watch?v=ZoC2XYol6Zk
 --

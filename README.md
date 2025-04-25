@@ -122,7 +122,13 @@ OpenTofu (formerly known as Terraform) is the community driven OSS tool for Infr
 - **Infrastructure as Code Best Practices**: OpenTofu follows IaC best practices, such as immutability, idempotency, and automation, which help ensure that infrastructure is always in a known and desired state.
 - **Open-Source and Community-Driven**: OpenTofu is open-source, which means the community has control over the development and improvement of the tool. Organizations can contribute to its evolution and benefit from improvements made by the broader ecosystem.
 
-## 1.8 - Why Shell script & kubectl & Helm over Ansible to automate internal configuration?
+## 1.8 - Why TimescaleDB
+- Postgres support vector format in order to perform semantic search in RAG data, [see project](https://github.com/pgvector/pgvector)
+- Timescale DB is build in top of Postgres providing among other features timeseries extended capabilities and Vectorizer automation. Vectorizer automation , called **pgai vectorizer**, provides continuous creation/update of vector data and its index for semantic search is a super nice feature that we can take advantage of, please see [link1 blog](https://www.timescale.com/blog/vector-databases-are-the-wrong-abstraction) and [link2 you tube video](https://www.youtube.com/watch?v=ZoC2XYol6Zk)
+- See **pgai vectorizer** ![process architecture](pgai-vectorizer.png)
+- Timescale DB license protection is againts Cloud Hiperscalers, we can use it safely see [log](https://www.timescale.com/blog/how-we-are-building-a-self-sustaining-open-source-business-in-the-cloud-era#what-does-this-mean-for-me)]
+
+## 1.9 - Why Shell script & kubectl & Helm over Ansible to automate internal configuration?
 Ideally, in this POC, **we are going to install everything in one VM inside microK8s**:
 - We can use OpenTofu and AWS EC2 "userdata" to execute Shell scripts and install packages & microk8s inside a VM
 - We can use OpenTofu for:
@@ -134,12 +140,12 @@ Ideally, in this POC, **we are going to install everything in one VM inside micr
 - Shell scripts + kubectl + Helm are ideal for highly specific, Kubernetes-centric tasks and rapid prototyping.**Exactly OUR POC case**.
 - Ansible is better suited for configuration management across diverse systems, complex workflows, and large-scale infrastructure automation.
 
-## 1.8 - Why not a CI/CD like Gitlab?
+## 1.10 - Why not a CI/CD like Gitlab?
 I love Gitlab OSS vs SaaS product and commercial strategy and although I have considered installing it, finally I did not for this POC. Here why:
 - Installing Gitlab OSS requires quite a lot of RAM
 - The microservices we are going to install are simple POCs with not real need of CI quality requirements
 
-## 1.9 - Why ArgoCD?
+## 1.11 - Why ArgoCD?
 ArgoCD is installed inside microk8s and can be linked into a git repo so whatever changes we make to the code is deployed inside K8S.
 
 Ideally, we are going to incrementally add more and more features and best practices to our POC microservices, so, it would be nice be to have a CD (continuous deployment) just after we push whatever code or config change into our microservices git repo.
@@ -150,14 +156,13 @@ Ideally, we are going to incrementally add more and more features and best pract
 ├── 1-microk8s: we choose microK8S as the neutral vendor platform to run differents POCs
 │   ├── AWS: TF/OpenTofu scripts to run it in AWS free tier t4g Ubuntu
 │   └── WSL2: how to install it locally in WSL2 - Ubuntu 22
-├── 2-Docker
-│   └── tasks-flask-api
-├── 3-K8s-task-flask-api: with our own Task application we CRUD tasks in MongoDB in K8S platform
-├── 4-K8s-Best-practices
-├── 5-BigData-AI
+│   └──OVH: TF/OpenTofu scripts to run it in OVH Ubuntu European provider
+
+├── 2-BigData-AI
 │   └── Dapr
 │   └── Ollama
-├── 6-OpenTelemetry
+│   └── TimescaleDB
+
 ``` 
 # 3 - Install
 **WIP**
