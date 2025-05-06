@@ -46,6 +46,7 @@ def invoke_ollama_via_dapr(prompt, model="llama3.2:1b"):
         }
 
         # Define the Dapr service invocation endpoint
+        # give us service discovery, retries and encripted communications
         resp = d.invoke_method(
             app_id='ollama-llm.ollama',
             method_name='api/generate',

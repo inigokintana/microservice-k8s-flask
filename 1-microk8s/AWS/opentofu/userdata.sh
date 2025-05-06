@@ -45,7 +45,7 @@ k get nodes -o wide
 # This command starts a proxy to the Kubernetes Dashboard UI in the background
 # it will be available at https://127.0.0.1:10443
 sudo microk8s dashboard-proxy &
-# Because we enabled rbac in the cluster, we need to create a service account and cluster role binding for the dashboard
+# Because we enabled rbac in the cluster, we need to create a service account and cluster role binding for the microk8s dashboard
 k create serviceaccount kubernetes-admin-dashboard -n kube-system --dry-run=client -o yaml > sa-kubernetes-admin-dashboard.yaml
 k apply-f ./sa-kubernetes-admin-dashboard.yaml
 k create clusterrolebinding kubernetes-admin-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-admin-dashboard -n kube-system --dry-run=client -o yaml > rb-kubernetes-admin-dashboard.yaml
@@ -66,7 +66,12 @@ echo $TOKEN >> token-kubernetes-admin-dashboard.yaml
 # Microk8s web dashboard:system microk8s-dashboard-token
 # exit
 
-## Install Dapr arm architecture
+## Install Dapr arm architecture - change version file when needed
+# Dapr is a portable, event-driven runtime that makes it easy for developers to build resilient, microservices-based applications.
+# It provides APIs that simplify the development of microservices by abstracting away the complexities of distributed systems.
+# Dapr is designed to work with any programming language and can be deployed on any cloud or on-premises environment.
+# Dapr is a set of building blocks for microservices, providing capabilities such as service invocation, state management, pub/sub messaging, and more.
+# Dapr is designed to be language-agnostic and can be used with any programming language that supports HTTP or gRPC.
 wget https://github.com/dapr/cli/releases/download/v1.15.0/dapr_linux_arm64.tar.gz
 tar -xvzf dapr_linux_arm64.tar.gz
 sudo mv dapr /usr/local/bin/dapr
@@ -74,6 +79,7 @@ cd
 mkdir .kube
 sudo cp -p /var/snap/microk8s/current/credentials/client.config .kube/config
 sudo chown ubuntu:microk8s .kube/config
+# jnstall dapr in k8s with redis and zipkin 
 dapr init --kubernetes --dev
 k get pods -n dapr-system
 k get pods -n default
@@ -85,14 +91,18 @@ dapr dashboard -k -p 9999 &
 
 # Deploy task flask api with the comand above
 
-## Install Ollama arm architecture
-cd 8-BigData-AI/Ollama
-k apply namespace.yaml
-k apply deployment.yaml <- find ARM image
-k apply service.yaml
+## Install Ollama arm/Intel/AMD architecture - Preload Encodding: all-minilm & LLM: llama3.2:1b
+cd final/create_ollama/deploy
+# Ollama is a platform for running and sharing large language models (LLMs) locally.
+# It provides a simple command-line interface (CLI) for running LLMs and a web-based UI for managing and sharing models.
+# Ollama is designed to be easy to use and provides a variety of pre-trained models that can be run locally.
+k apply -f namespace.yaml
+k apply -f deployment.yaml
+k apply -f service.yaml
 kubectl -n ollama port-forward service/ollama 11434:80 &
 k get pod -n ollama
-k -n ollama exec -it pod/ollama-59476b6f4c-rmjkz -- sh
+# Test the Ollama API locally
+# k -n ollama exec -it pod/ollama-59476b6f4c-rmjkz -- sh
 curl http://localhost:11434/api/generate -d '{
   "model": "llama3.2:1b",
   "prompt": "What is Kubernetes?",
@@ -100,25 +110,42 @@ curl http://localhost:11434/api/generate -d '{
   "raw": true
   }'
 
-# Instal pg with pgvector - activate extension
+# Install Timescale DB with pgvector extension and vectorizer for LLM RAG
+cd final/create_pg_vector/deploy
+k  apply -f namespace.yaml
+k  apply -f data-pv.yaml
+k  apply -f data-pvc.yaml
+k  apply -f secret-pgvector.yaml
+# vectorizer to ollama connection config is done with k8s DNS no Dapr naming - to check with Dapr naming app_id='ollama-llm.ollama' 
+# post http://localhost:3500/v1.0/invoke/ollama-llm.ollama/method/chat
+k  apply -f deployment.yaml
+k  apply -f service.yaml
+
+# Load data into TimescaleDB with automatic vectorization
+# guess-poems with dapr sdk & http - no database use
+# guess-films with dapr sdk
+# guess-wiki-questions http
+
+# deploy 
+# guess-poems with dapr sdk & http - no database use
+# guess-films with dapr sdk
+# guess-wiki-questions http
 
 
 # Install ArgoCD arm architecture
-
-
+# Dapr ArgoCD https://www.diagrid.io/blog/dapr-meets-gitops-a-guide-to-dapr-and-argo-cd
+# github argocd https://medium.com/be-tech-with-santander/from-git-to-kubernetes-in-10-minutes-with-argocd-3027a2d5ea62
 # kubectl create namespace argocd
 # kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 #expose via port server
 # kubectl port-forward svc/argocd-server -n argocd 8080:443 &
-#login argoCD user admin
+# login argoCD user admin
 # kubectl -n argocd get secret argocd-initial-admin-secret -o=jsonpath='{.data.password}' | base64 -d
-#connect from local ssh to port 8888
+# connect from local ssh to port 8888
 # ssh -L 8888:127.0.0.1:8080 ubuntu@<ec2-public-ip>
 # get the my-app-argo.yaml with wget from github or S3
 # github https://github/my-app-argo.yaml
 # kubectl apply -f my-app-argo.yaml
 # Deploy task flask api with the comand above
 
-# Deploy Dapr with Agent automations
-
-# Deploy Ollama predefined LLM model
+# Deploy Dapr with Agent automations using OpenAI - later susbtitute component to Ollama
